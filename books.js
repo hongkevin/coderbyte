@@ -20,11 +20,11 @@ var upload = multer({
     bucket : 'mocatest',
     acl : 'public-read',
     key : function(req, file, callback) {
-      var tmp = file.mimetype.split('/')[1]; // file.mimetype을 뽑아낸 뒤 확장자를 추출
+      var tmp = file.mimetype.split('/')[1]; // file.mimetype
       if (tmp == 'jpeg') { tmp = 'jpg' }
       var ext = "." + tmp;
       var keyword = "Moca_Photo_";
-      var newname = keyword + Date.now().toString() + ext; // 일단은 이렇게 하고 동일 시간에 올라가면서 중복되면 uuid로 보완
+      var newname = keyword + Date.now().toString() + ext;
       callback(null, newname);
     }
   })
@@ -47,7 +47,7 @@ router.post('/', upload.single('img'), function(req, res, next) {
 
     data.save(function(err, docs) {
       if (err) { return next(err); }
-      res.json({ success: 1, message: "사진이 업로드되었습니다." });
+      res.json({ success: 1, message: "photo is uploaded" });
     });
   };
   // imgSave function end
@@ -57,7 +57,7 @@ router.post('/', upload.single('img'), function(req, res, next) {
     if (docs.user_type == "M" || docs.user_type == "P") {
       imgSave();
     } else {
-      res.json({ success: 0, message: "사진을 업로드하기 위해서는 모델/작가 등록을 해야합니다." });
+      res.json({ success: 0, message: "You should be registered as a model or photographer first" });
     }
   });
 });
